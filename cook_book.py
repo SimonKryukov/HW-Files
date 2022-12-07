@@ -3,7 +3,8 @@ current = os.getcwd()
 folder = 'test_file'
 file_name = 'text_recept.txt'
 full_path = os.path.join(current, folder, file_name)
-print(f'Полный путь: {full_path}')
+
+# print(f'Полный путь: {full_path}')
 
 with open('text_recept.txt', 'r', encoding='utf-8') as file:
     cook_book = {}
@@ -37,51 +38,31 @@ with open('text_recept.txt', 'r', encoding='utf-8') as file:
                 del shop_list_item['ingridient_name']
         return shop_list
     
-    pprint(get_shop_list_by_dishes(['Запеченный картофель', 'Омлет'], 2))
+    # pprint(get_shop_list_by_dishes(['Запеченный картофель', 'Омлет'], 2))
     
+def len_file(file):
+    with open(file, 'r', encoding='utf-8') as f:
+        result = len(f.readlines())
+    return result
 
-    
+def read_file(file):
+    with open(file, 'r', encoding='utf-8') as f:
+        file_list = []
+        file_list.append(file), file_list.append(str(len_file(file)))
+        for line in f:
+            if "\n" in line:
+                pos = line.index("\n")   # приходится убирать с каждой строки \n потому что он делает лишнии пробелы между строк, где
+                a = line[:pos]           # задвоены \n
+                file_list.append(a)
+            else:
+                file_list.append(line)
+        return file_list
 
-            
+f = []
+f.append(read_file('2.txt'))
+f.append(read_file('1.txt'))
+f.append(read_file('3.txt'))
+f = [j + '\n' for line in f for j in line]
 
-    
-    
-    
-
-
-
-   
-    # def get_cook_book():
-    #     cook_book = {}
-    #     key_list = []
-    #     for dish in file:
-    #         if "\n" in dish:
-    #             dish = dish[: dish.index("\n")]
-    #         dish = dish.strip()
-    #         dish_count = int(file.readline())
-    #         key_list.append(dish)
-    #         ingridients = []
-    #         for ingridient in range(dish_count):
-    #             ingridient = file.readline().strip()
-    #             ing, quantity, measure = ingridient.split(' | ')
-    #             ingridients.append({
-    #                 'ingredient_name': ing,
-    #                 'quantity': quantity,
-    #                 'measure': measure
-    #             })
-    #         file.readline()
-    #     cook_book = dict.fromkeys(key_list, ingridients)
-    #     return cook_book
-
-    # def find_by_key(iterable, key, value):
-    #     for index, dict_ in enumerate(iterable):
-    #         if key in dict_ and dict_[key] == value:
-    #             return (index, dict_)
-    
-    # def find_all_by_key(iterable, key, value):
-    #     for index, dict_ in enumerate(iterable):
-    #         if key in dict_ and dict_[key] == value:
-    #             yield (index, dict_)
-    
-    # print(find_by_key(['Омлет'], 'ingredient_name', '' ))
-    
+with open('4.txt', 'w', encoding='utf-8') as file:
+    file.writelines(f)
